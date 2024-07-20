@@ -1,9 +1,9 @@
-
-
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { PublicKey, VersionedTransaction, Connection } from '@solana/web3.js';
+import toast, { Toaster } from 'react-hot-toast';
+
 
 interface Props {
   zodiacSign: string;
@@ -16,14 +16,11 @@ export const BuyZodiacCoin: FC<Props> = ({ zodiacSign }) => {
   const { publicKey, wallet } = useWallet();
   const [isPurchasing, setIsPurchasing] = useState(false);
 
-   // Move this effect outside the component to prevent hydration mismatch
-   useEffect(() => {
+  useEffect(() => {
     if (typeof window !== 'undefined') {
       console.log(wallet ? 'Wallet:' : 'Wallet is undefined', wallet);
     }
   }, [wallet]);
-
-  
 
   const ZodiacCoinList = {
     Capricorn: "3C2SN1FjzE9MiLFFVRp7Jhkp8Gjwpk29S2TCSJ2jkHn2",
@@ -55,8 +52,6 @@ export const BuyZodiacCoin: FC<Props> = ({ zodiacSign }) => {
 
     try {
       const tokenMint = new PublicKey(ZodiacCoinList[zodiacSign]);
-      // Fetch quoteResponse
-
       const amount = 10000000; // 0.01
       const quoteResponse = await fetch(`https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=${tokenMint}&amount=${amount}&slippageBps=1`).then(res => res.json());
   
@@ -65,7 +60,6 @@ export const BuyZodiacCoin: FC<Props> = ({ zodiacSign }) => {
       const inAmountInSol = quoteResponse.inAmount / 1000000000; // 1 SOL = 1,000,000,000 lamports
       console.log(`Input amount (SOL): ${inAmountInSol}`);
   
-      // Fetch swapTransaction
       const swapResponse = await fetch('https://quote-api.jup.ag/v6/swap', {
         method: 'POST',
         headers: {
@@ -81,13 +75,12 @@ export const BuyZodiacCoin: FC<Props> = ({ zodiacSign }) => {
       const swapTransactionBuf = Buffer.from(swapTransaction, 'base64');
       const transaction = VersionedTransaction.deserialize(swapTransactionBuf);
 
-      // const signedTransaction = await wallet.adapter.signTransaction(transaction);
       const txid = await wallet.adapter.sendTransaction(transaction, connection);
       console.log('Transaction successful with txid:', txid);
-      alert(`Congratulations! You've purchased ${zodiacSign} memecoin!`);
+      toast.success(`Congratulations! You've purchased ${zodiacSign} memecoin!`);
     } catch (error) {
       console.error('Error buying memecoin:', error);
-      alert('Failed to purchase memecoin. Please try again.');
+      toast.error('Failed to purchase memecoin. Please try again.');
     } finally {
       setIsPurchasing(false);
     }
@@ -95,6 +88,10 @@ export const BuyZodiacCoin: FC<Props> = ({ zodiacSign }) => {
 
   return (
     <div className="flex justify-center flex-col w-full">
+      <Toaster position="bottom-right" toastOptions={{
+    className: 'border text-black',
+    duration: 3000,
+  }}/>
     {!publicKey && (
       <div className="text-center text-zinc-700">
         Please connect your wallet to buy {zodiacSign} Memecoin.
