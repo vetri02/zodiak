@@ -80,10 +80,9 @@ export const BuyZodiacCoin: FC<Props> = ({ zodiacSign }) => {
       const { swapTransaction } = swapResponse;
       const swapTransactionBuf = Buffer.from(swapTransaction, 'base64');
       const transaction = VersionedTransaction.deserialize(swapTransactionBuf);
-      transaction.feePayer = publicKey;
 
-      const signedTransaction = await wallet.adapter.signTransaction(transaction);
-      const txid = await wallet.adapter.sendTransaction(signedTransaction, connection);
+      // const signedTransaction = await wallet.adapter.signTransaction(transaction);
+      const txid = await wallet.adapter.sendTransaction(transaction, connection);
       console.log('Transaction successful with txid:', txid);
       alert(`Congratulations! You've purchased ${zodiacSign} memecoin!`);
     } catch (error) {
