@@ -22,7 +22,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="min-h-screen bg-gray-50">
+      <main className="min-h-screen">
         <ZodiacFinder />
       </main>
     </>

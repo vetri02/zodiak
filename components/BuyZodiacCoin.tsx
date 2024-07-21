@@ -97,8 +97,19 @@ export const BuyZodiacCoin: FC<Props> = ({ zodiacSign }) => {
         Please connect your wallet to buy {zodiacSign} Memecoin.
       </div>
     )}
-    <div className={`flex mb-4 ${publicKey ? 'justify-end' : 'justify-center'}`}>
-      <WalletMultiButton className="bg-gray-800 text-white rounded-md px-4 py-2 hover:bg-gray-700" />
+    <div className={`flex mb-4 pt-2 ${publicKey ? 'justify-end' : 'justify-center'}`}>
+      <WalletMultiButton  style={{
+      backgroundColor: '#fff', // blue-500
+      color: '#000',
+      padding: '0.5rem 1rem', // py-2 px-4
+      borderRadius: '0.25rem', // rounded
+      display: 'flex',
+      alignItems: 'center',
+      cursor: 'pointer',
+      border: '1px solid #000',
+      fontFamily: 'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+      transition: 'background-color 0.2s ease-in-out',
+    }}/>
     </div>
     {publicKey && (
       <button
