@@ -17,8 +17,8 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Zodiak - Astrology Sign Finder</title>
-        <meta name="description" content="Find your astrological sign based on your birth date" />
+        <title>Zodiak - Astrology Memecoin Finder</title>
+        <meta name="description" content="Find your astrological sign based on your birth date and memecoin" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
